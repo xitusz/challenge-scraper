@@ -10,7 +10,6 @@ const fetchPage = async (url) => {
 
     return cheerio.load(response.data);
   } catch (err) {
-    console.error(`Erro ao buscar a página ${url}:`, err);
     return null;
   }
 };
@@ -18,11 +17,10 @@ const fetchPage = async (url) => {
 const getTotalPages = async () => {
   try {
     const $ = await fetchPage(baseUrl);
-    const totalPages = parseInt($(".pagination li").last().prev().text());
+    const totalPages = parseInt($(".pagination li").last().prev().text()) || 1;
 
     return totalPages;
   } catch (err) {
-    console.error(`Erro ao buscar o total de páginas:`, err);
     return 1;
   }
 };
@@ -31,7 +29,6 @@ const sortedLaptops = (laptops) => {
   try {
     return laptops.sort((a, b) => a.price - b.price);
   } catch (err) {
-    console.error(`Erro ao ordenar os laptops:`, err);
     return laptops;
   }
 };
@@ -59,7 +56,6 @@ const getLaptopsFromPage = ($, searchTerm) => {
 
     return laptops;
   } catch (err) {
-    console.error(`Erro ao buscar os laptops da página:`, err);
     return [];
   }
 };
@@ -79,9 +75,14 @@ const getLaptops = async (searchTerm) => {
 
     return sortedLaptops(laptops);
   } catch (err) {
-    console.error(`Erro ao buscar os laptops:`, err);
     return [];
   }
 };
 
-module.exports = { getLaptops, getTotalPages };
+module.exports = {
+  getLaptops,
+  getTotalPages,
+  fetchPage,
+  sortedLaptops,
+  getLaptopsFromPage,
+};

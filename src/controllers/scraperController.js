@@ -7,7 +7,6 @@ const getLaptops = async (req, res) => {
 
     return res.status(200).json(laptops);
   } catch (err) {
-    console.error("Erro ao buscar laptops:", err);
     return res.status(500).json({ error: "Erro ao buscar laptops" });
   }
 };
